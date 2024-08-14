@@ -1,0 +1,61 @@
+<!-- src/views/register.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <div>
+        <a href="/">HOME</a>
+    </div>
+    <h1>Register</h1>
+    <form id="registForm" method="POST">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+        <button type="submit">Register</button>
+    </form>
+    <div id="message" style="margin-top: 20px;"></div>
+
+    <script type="text/javacript">
+        document.getElementById("registForm").addEventListner("submit", async function(event) {
+            event.preventDefault();
+
+            <!-- const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value; -->
+
+            const form = document.getElementById("registForm");
+            const formData = new FormData(form);
+            
+            console.log(username);
+            console.log(password);
+
+            // 폼의 입력창 및 버튼 비활성화
+            document.querySelectorAll("#registForm input, #registForm button").forEach(function(element) {
+                element.disabled = true;
+            });
+    
+            try {
+                const response = await fetch("/register", {
+                    body: formData
+                });
+                
+                const result = await response.json();
+    
+                // 밑의 코드 작동안함. 그대로 json 메세지가 보이는 중
+                document.getElementById("message").innerText = result.message;
+            } catch (error) {
+                console.log("Error: ", error);
+                document.getElementById("message").innerText = "에러가 발생했습니다. 재시도해주세요.";
+            }
+        });
+        
+
+    </script>
+
+    
+</body>
+</html>

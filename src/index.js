@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("node:path");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
@@ -6,13 +7,27 @@ const app = express();
 const PORT = 8080;
 const SECRET_KEY = "mhmh_secret_key"; // 토큰 서명을 위한 비밀키
 
+// ** 미들웨어 **
 // request의 body에 들어오는 데이터를 json형식으로 파싱해서 객체로 변환해줌. 변환된 객체는 req.body에 담김.
-app.use(express.json());
+app.use(express.json()); 
+// application/x-www-form-urlencoded 형식으로 전송되는 폼 데이터를 파싱하는데 사용함. 이게 있어야 req.body에 폼데이터가 들어옴.
+app.use(express.urlencoded({ extended: true }));
 
 // 사용자 저장
 let users = []; 
 
-// 회원가입 라우트
+// 기본 화면 GET 라우트
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "views", "index.html"));    
+});
+
+// 회원가입 GET 라우트
+app.get("/register", (req, res) => {
+    // register.html 파일을 views 폴더에서 찾아서 전송
+    res.sendFile(path.join(__dirname, "views", "register.html"));
+});
+
+// 회원가입 POST 라우트
 app.post("/register", async (req, res) => {
     const { username, password } = req.body;
 
@@ -22,9 +37,16 @@ app.post("/register", async (req, res) => {
     users.push({ username, password: hashedPassword });
 
     res.json({ message: "사용자 저장에 성공했습니다!" });
+
+    // res.send('User registered successfully!<br/> <a href="/register">Register another user</a><br/> <a href="/login">로그인</a> <a href="/">HOME</a>');
 });
 
-// 로그인 라우트
+// 로그인 GET 라우트
+app.get("/login",  (req, res) => {
+    res.sendFile(path.join(__dirname, "views", "login.html"));
+});
+
+// 로그인 POST 라우트
 app.post("/login", async (req, res) => {
     const { username, password } = req.body;
 
