@@ -1,0 +1,16 @@
+{
+  "name": "1-01_jwt",
+  "version": "1.0.0",
+  "description": "노드로 만드는 jwt 로그인 구현",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mh",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
